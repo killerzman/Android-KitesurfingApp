@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/spotname"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:text="@string/spot_name"
@@ -18,7 +18,9 @@
         android:clickable="false"
         android:focusable="false"
         android:textSize="20sp"
-        android:layout_marginStart="10dp" />
+        android:layout_marginStart="10dp"
+        android:layout_toLeftOf="@id/favbutton"
+        android:layout_toStartOf="@id/favbutton" />
 
     <ImageButton
         android:id="@+id/favbutton"
@@ -29,7 +31,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="15dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/starbutton"
+        android:src="@drawable/normal_star_button"
         android:text="@string/fav_button"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="10dp"
@@ -37,15 +39,16 @@
 
     <TextView
         android:id="@+id/countryname"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="35dp"
-        android:layout_marginBottom="0dp"
+        android:layout_below="@id/spotname"
         android:text="@string/country_name"
         android:clickable="false"
         android:focusable="false"
         android:textSize="16sp"
-        android:layout_marginStart="10dp" />
+        android:layout_marginStart="10dp"
+        android:layout_toLeftOf="@id/favbutton"
+        android:layout_toStartOf="@id/favbutton" />
 
 </RelativeLayout>

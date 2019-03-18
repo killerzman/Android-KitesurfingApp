@@ -3,6 +3,9 @@ package com.vladt.kitesurfingapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,7 +18,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
@@ -30,47 +32,58 @@ public class ListActivity extends AppCompatActivity {
 
         spotsAndCountries = new ArrayList<>();
 
-        final JSONPostRequest jpr = new JSONPostRequest("https://internship-2019.herokuapp.com/api-spot-get-all"
-                , new String[]{"Content-Type", "token"}, new String[]{"application/json", "OxrBHp1ReG"});
-
-        final String[] s = {null};
-        Thread t = new Thread(new Runnable() {
+        final String[] result = new String[1];
+        PostRequestJSON prj = new PostRequestJSON(new PostRequestJSON.AsyncResponse() {
             @Override
-            public void run() {
+            public void processFinish(String output) {
+                result[0] = output;
+                parseJSONData();
+                setCustomAdapter();
+            }
+
+            private void parseJSONData() {
+                JSONObject jo;
                 try {
-                    s[0] = jpr.doRequest();
-                } catch (IOException e) {
+                    jo = new JSONObject(result[0]);
+                    JSONArray ja = (JSONArray) jo.get("result");
+                    for (int i = 0; i < ja.length(); i++) {
+                        ArrayList<String> _arrL = new ArrayList<>();
+                        JSONObject _jo = ja.getJSONObject(i);
+                        _arrL.add(_jo.get("name").toString());
+                        _arrL.add(_jo.get("country").toString());
+                        spotsAndCountries.add(_arrL);
+                    }
+
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
-        });
 
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            private void setCustomAdapter(){
+                listView = findViewById(R.id.list);
 
-        JSONObject jo;
-        try {
-            jo = new JSONObject(s[0]);
-            JSONArray ja = (JSONArray) jo.get("result");
-            for (int i = 0; i < ja.length(); i++) {
-                ArrayList<String> _arrL = new ArrayList<>();
-                JSONObject _jo = ja.getJSONObject(i);
-                _arrL.add(_jo.get("name").toString());
-                _arrL.add(_jo.get("country").toString());
-                spotsAndCountries.add(_arrL);
+                listView.setAdapter(new CustomAdapter());
             }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
+        });
+
+        prj.execute("https://internship-2019.herokuapp.com/api-spot-get-all",
+                "Content-Type","application/json","token","OxrBHp1ReG");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.action_filter:
+                startActivity(new Intent(ListActivity.this, FiltersActivity.class));
         }
-
-        listView = findViewById(R.id.list);
-
-        listView.setAdapter(new CustomAdapter());
+        return super.onOptionsItemSelected(item);
     }
 
     class CustomAdapter extends BaseAdapter {
@@ -94,6 +107,9 @@ public class ListActivity extends AppCompatActivity {
         public View getView(int i, View view, ViewGroup viewGroup) {
             view = getLayoutInflater().inflate(R.layout.list_activity_view, null);
 
+            Toolbar toolbar = findViewById(R.id.app_bar);
+            setSupportActionBar(toolbar);
+
             TextView spotName = view.findViewById(R.id.spotname);
             final ImageButton favButton = view.findViewById(R.id.favbutton);
             TextView countryName = view.findViewById(R.id.countryname);
@@ -104,17 +120,14 @@ public class ListActivity extends AppCompatActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int idx, long id) {
-                    Intent intent = new Intent(ListActivity.this, DetailsActivity.class);
-                    startActivity(intent);
+                    startActivity(new Intent(ListActivity.this, DetailsActivity.class));
                 }
             });
 
             favButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //favButton.setPressed(!favButton.isPressed());
-                    Intent intent = new Intent(ListActivity.this, FiltersActivity.class);
-                    startActivity(intent);
+                    favButton.setPressed(!favButton.isPressed());
                 }
             });
 
