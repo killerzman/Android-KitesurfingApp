@@ -27,12 +27,17 @@ public class PostRequestJSON extends AsyncTask<String, Integer, String> {
             URL obj = new URL(params[0]);
             HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
             postConnection.setRequestMethod("POST");
-            for (int i = 1; i < params.length; i += 2) {
+            for (int i = 1; i < params.length - 1; i += 2) {
                 postConnection.setRequestProperty(params[i], params[i + 1]);
             }
+            postConnection.setDoInput(true);
             postConnection.setDoOutput(true);
             OutputStream os = postConnection.getOutputStream();
-            os.flush();
+            if(!params[params.length - 1].equals("")) {
+                os.write(params[params.length - 1].getBytes("UTF-8"));
+                os.close();
+            }
+            postConnection.connect();
             int responseCode = postConnection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 StringBuffer response;

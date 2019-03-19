@@ -24,6 +24,9 @@ public class ListActivity extends AppCompatActivity {
 
     ArrayList<ArrayList<String>> spotsAndCountries;
     ListView listView;
+    String url;
+    JSONObject urlBody;
+    String urlBodyString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,20 +34,42 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.list_activity);
 
         spotsAndCountries = new ArrayList<>();
+        url = "https://internship-2019.herokuapp.com/api-spot-get-all";
 
-        final String[] result = new String[1];
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            urlBody = new JSONObject();
+            try {
+                urlBody.put("country", extras.getString("Country"));
+                urlBody.put("windProbability", extras.getString("Wind Probability"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            urlBody = null;
+        }
+
+        if(urlBody != null){
+            urlBodyString = urlBody.toString();
+        }
+        else{
+            urlBodyString = "";
+        }
+
         PostRequestJSON prj = new PostRequestJSON(new PostRequestJSON.AsyncResponse() {
+            final String[] result = new String[1];
+
             @Override
             public void processFinish(String output) {
                 result[0] = output;
-                parseJSONData();
+                parseJSONData(result[0]);
                 setCustomAdapter();
             }
 
-            private void parseJSONData() {
+            private void parseJSONData(String res) {
                 JSONObject jo;
                 try {
-                    jo = new JSONObject(result[0]);
+                    jo = new JSONObject(res);
                     JSONArray ja = (JSONArray) jo.get("result");
                     for (int i = 0; i < ja.length(); i++) {
                         ArrayList<String> _arrL = new ArrayList<>();
@@ -59,7 +84,7 @@ public class ListActivity extends AppCompatActivity {
                 }
             }
 
-            private void setCustomAdapter(){
+            private void setCustomAdapter() {
                 listView = findViewById(R.id.list);
 
                 listView.setAdapter(new CustomAdapter());
@@ -67,19 +92,18 @@ public class ListActivity extends AppCompatActivity {
 
         });
 
-        prj.execute("https://internship-2019.herokuapp.com/api-spot-get-all",
-                "Content-Type","application/json","token","OxrBHp1ReG");
+        prj.execute(url, "Content-Type", "application/json", "token", "OxrBHp1ReG", urlBodyString);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.list_menu, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_filter:
                 startActivity(new Intent(ListActivity.this, FiltersActivity.class));
         }

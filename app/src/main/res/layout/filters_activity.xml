@@ -9,7 +9,7 @@
         layout="@layout/app_bar" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/countryTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20sp"
@@ -20,8 +20,8 @@
         android:text="@string/country"
         android:textColor="@android:color/black" />
 
-    <EditText
-        android:id="@+id/editText"
+    <Spinner
+        android:id="@+id/countrySpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20sp"
@@ -29,11 +29,10 @@
         android:layout_marginEnd="20sp"
         android:layout_marginRight="20sp"
         android:autofillHints="Country name"
-        android:ems="10"
         android:inputType="textPersonName" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/windProbabilityTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20sp"
@@ -44,16 +43,15 @@
         android:text="@string/wind_probability"
         android:textColor="@android:color/black" />
 
-    <EditText
-        android:id="@+id/editText2"
+    <SeekBar
+        android:id="@+id/seekbarWind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20sp"
         android:layout_marginLeft="20sp"
+        android:layout_marginTop="10sp"
         android:layout_marginEnd="20sp"
         android:layout_marginRight="20sp"
-        android:autofillHints="Value between 1 and 100"
-        android:ems="10"
         android:inputType="phone" />
 
     <Button
