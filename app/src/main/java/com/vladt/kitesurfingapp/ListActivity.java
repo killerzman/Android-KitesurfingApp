@@ -23,6 +23,7 @@ import java.util.ArrayList;
 public class ListActivity extends AppCompatActivity {
 
     ArrayList<ArrayList<String>> spotsAndCountries;
+    ArrayList<String> idSpots;
     ListView listView;
     String url;
     JSONObject urlBody;
@@ -34,6 +35,7 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.list_activity);
 
         spotsAndCountries = new ArrayList<>();
+        idSpots = new ArrayList<>();
         url = "https://internship-2019.herokuapp.com/api-spot-get-all";
 
         Bundle extras = getIntent().getExtras();
@@ -41,7 +43,12 @@ public class ListActivity extends AppCompatActivity {
             urlBody = new JSONObject();
             try {
                 urlBody.put("country", extras.getString("Country"));
-                urlBody.put("windProbability", extras.getString("Wind Probability"));
+                String windProbNumber = extras.getString("Wind Probability");
+                assert windProbNumber != null;
+                if (windProbNumber.equals("0")) {
+                    windProbNumber = "";
+                }
+                urlBody.put("windProbability", windProbNumber);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -49,10 +56,9 @@ public class ListActivity extends AppCompatActivity {
             urlBody = null;
         }
 
-        if(urlBody != null){
+        if (urlBody != null) {
             urlBodyString = urlBody.toString();
-        }
-        else{
+        } else {
             urlBodyString = "";
         }
 
@@ -76,6 +82,7 @@ public class ListActivity extends AppCompatActivity {
                         JSONObject _jo = ja.getJSONObject(i);
                         _arrL.add(_jo.get("name").toString());
                         _arrL.add(_jo.get("country").toString());
+                        idSpots.add(_jo.get("id").toString());
                         spotsAndCountries.add(_arrL);
                     }
 
@@ -131,7 +138,7 @@ public class ListActivity extends AppCompatActivity {
         public View getView(int i, View view, ViewGroup viewGroup) {
             view = getLayoutInflater().inflate(R.layout.list_activity_view, null);
 
-            Toolbar toolbar = findViewById(R.id.app_bar);
+            Toolbar toolbar = findViewById(R.id.app_bar_list);
             setSupportActionBar(toolbar);
 
             TextView spotName = view.findViewById(R.id.spotname);
@@ -144,14 +151,23 @@ public class ListActivity extends AppCompatActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int idx, long id) {
-                    startActivity(new Intent(ListActivity.this, DetailsActivity.class));
+                    Intent intent = new Intent(ListActivity.this, DetailsActivity.class);
+                    intent.putExtra("id", idSpots.get(idx));
+                    startActivity(intent);
                 }
             });
 
             favButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    favButton.setPressed(!favButton.isPressed());
+                    /*PostRequestJSON addFav = new PostRequestJSON(new PostRequestJSON.AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) {
+
+                        }
+                    });
+                    addFav.execute(url, "Content-Type", "application/json", "token", "OxrBHp1ReG", urlBodyString);*/
+                    favButton.setSelected(!favButton.isSelected());
                 }
             });
 

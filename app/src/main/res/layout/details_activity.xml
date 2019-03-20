@@ -1,6 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DetailsActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <include
+        android:id="@+id/app_bar_details"
+        layout="@layout/app_bar" />
+
+    <TextView
+        android:id="@+id/countryDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Country"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar_details" />
+
+    <TextView
+        android:id="@+id/countryInfoDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Country Info"
+        android:textColor="#757575" />
+
+    <TextView
+        android:id="@+id/latitudeDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
+        android:text="Latitude"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/latitudeInfoDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Latitude Info"
+        android:textColor="#757575" />
+
+    <TextView
+        android:id="@+id/longitudeDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
+        android:text="Longitude"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/longitudeInfoDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Longitude Info"
+        android:textColor="#757575" />
+
+    <TextView
+        android:id="@+id/windDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
+        android:text="Wind Probability"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/windInfoDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Wind Probability Info"
+        android:textColor="#757575" />
+
+    <TextView
+        android:id="@+id/whenToGoDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
+        android:text="When to Go"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/whenToGoInfoDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="When to Go Info"
+        android:textColor="#757575" />
+
+</LinearLayout>

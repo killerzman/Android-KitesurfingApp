@@ -30,7 +30,7 @@ public class FiltersActivity extends AppCompatActivity {
 
         countries = new ArrayList<>();
 
-        Toolbar toolbar = findViewById(R.id.app_bar);
+        Toolbar toolbar = findViewById(R.id.app_bar_filters);
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -111,8 +111,8 @@ public class FiltersActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(FiltersActivity.this, ListActivity.class);
-                        intent.putExtra("Country",selectedCountry[0]);
-                        intent.putExtra("Wind Probability",selectedWindProb[0].toString());
+                        intent.putExtra("Country", selectedCountry[0]);
+                        intent.putExtra("Wind Probability", selectedWindProb[0].toString());
                         startActivity(intent);
                     }
                 });
@@ -122,7 +122,7 @@ public class FiltersActivity extends AppCompatActivity {
 
         prj.execute("https://internship-2019.herokuapp.com/api-spot-get-countries",
                 "Content-Type", "application/json",
-                "token", "OxrBHp1ReG","");
+                "token", "OxrBHp1ReG", "");
     }
 
     @Override

@@ -2,6 +2,6 @@
     <item>
         <bitmap
             android:src="@drawable/star_off"
-            android:tint="@android:color/white"/>
+            android:tint="@android:color/white" />
     </item>
 </layer-list>

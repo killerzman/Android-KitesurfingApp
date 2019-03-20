@@ -33,7 +33,7 @@ public class PostRequestJSON extends AsyncTask<String, Integer, String> {
             postConnection.setDoInput(true);
             postConnection.setDoOutput(true);
             OutputStream os = postConnection.getOutputStream();
-            if(!params[params.length - 1].equals("")) {
+            if (!params[params.length - 1].equals("")) {
                 os.write(params[params.length - 1].getBytes("UTF-8"));
                 os.close();
             }
