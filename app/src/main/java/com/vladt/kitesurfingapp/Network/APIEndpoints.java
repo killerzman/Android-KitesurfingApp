@@ -1,4 +1,4 @@
-package com.vladt.kitesurfingapp;
+package com.vladt.kitesurfingapp.Network;
 
 public class APIEndpoints {
     final public static String host = "internship-2019.herokuapp.com";

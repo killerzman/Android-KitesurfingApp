@@ -7,9 +7,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".DetailsActivity">
+    tools:context=".Activities.DetailsActivity">
 
     <include
         android:id="@+id/app_bar_details"
@@ -24,6 +24,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:text="@string/country"
+        android:textSize="18sp"
         android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@+id/app_bar_details" />
 
@@ -33,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:textSize="18sp"
         android:text="@string/country_info"
         android:textColor="#757575" />
 
@@ -41,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
+        android:textSize="18sp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
         android:text="@string/latitude"
@@ -51,6 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
+        android:textSize="18sp"
         android:layout_marginRight="8dp"
         android:text="@string/latitude_info"
         android:textColor="#757575" />
@@ -60,6 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
+        android:textSize="18sp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
         android:text="@string/longitude"
@@ -70,6 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
+        android:textSize="18sp"
         android:layout_marginRight="8dp"
         android:text="@string/longitude_info"
         android:textColor="#757575" />
@@ -78,6 +84,7 @@
         android:id="@+id/windDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
@@ -87,6 +94,7 @@
     <TextView
         android:id="@+id/windInfoDetails"
         android:layout_width="match_parent"
+        android:textSize="18sp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -98,6 +106,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
+        android:textSize="18sp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
         android:text="@string/when_to_go"
@@ -109,6 +118,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:textSize="18sp"
         android:text="@string/when_to_go_info"
         android:textColor="#757575" />
 
@@ -119,6 +129,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
+        android:textSize="15sp"
         android:text="@string/see_it_on_maps"
         android:textColor="@android:color/black" />
 

@@ -1,4 +1,4 @@
-package com.vladt.kitesurfingapp;
+package com.vladt.kitesurfingapp.Network;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeoutException;
 
 public class InternetConnection {
 
-    public static Boolean check(){
+    public static Boolean check() {
         InetAddress inetAddress = null;
         try {
             Future<InetAddress> future = Executors.newSingleThreadExecutor().submit(new Callable<InetAddress>() {
@@ -30,6 +30,6 @@ public class InternetConnection {
         } catch (ExecutionException e) {
         } catch (TimeoutException e) {
         }
-        return inetAddress!=null && !inetAddress.equals("");
+        return inetAddress != null && !inetAddress.equals("");
     }
 }

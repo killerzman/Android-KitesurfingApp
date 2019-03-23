@@ -1,4 +1,4 @@
-package com.vladt.kitesurfingapp;
+package com.vladt.kitesurfingapp.Models;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.vladt.kitesurfingapp;
+package com.vladt.kitesurfingapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,13 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.vladt.kitesurfingapp.Network.APIEndpoints;
+import com.vladt.kitesurfingapp.Network.APIHeaders;
+import com.vladt.kitesurfingapp.Network.InternetConnection;
+import com.vladt.kitesurfingapp.Network.PostRequestJSON;
+import com.vladt.kitesurfingapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +33,7 @@ public class FiltersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.filters_activity);
+        setContentView(R.layout.activity_filters);
 
         countries = new ArrayList<>();
         countries.add("<All countries>");
@@ -62,7 +69,7 @@ public class FiltersActivity extends AppCompatActivity {
 
             private void setCustomAdapter() {
                 final String[] selectedCountry = {null};
-                final Integer[] selectedWindProb = {0};
+                final int[] selectedWindProb = {0};
 
                 Spinner spinner = findViewById(R.id.countrySpinner);
                 final TextView windProbText = findViewById(R.id.windProbabilityTextView);
@@ -111,7 +118,7 @@ public class FiltersActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         Intent intent = new Intent(FiltersActivity.this, ListActivity.class);
                         intent.putExtra("Country", selectedCountry[0]);
-                        intent.putExtra("Wind Probability", selectedWindProb[0].toString());
+                        intent.putExtra("Wind Probability", selectedWindProb[0]);
                         startActivity(intent);
                     }
                 });
@@ -119,8 +126,12 @@ public class FiltersActivity extends AppCompatActivity {
             }
         });
 
-        prj.execute(new String[]{APIEndpoints.getSpotCountries, ""},
-                APIHeaders.get());
+        if (InternetConnection.check()) {
+            prj.execute(new String[]{APIEndpoints.getSpotCountries, ""},
+                    APIHeaders.get());
+        } else {
+            Toast.makeText(FiltersActivity.this, "Can't get countries while offline", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

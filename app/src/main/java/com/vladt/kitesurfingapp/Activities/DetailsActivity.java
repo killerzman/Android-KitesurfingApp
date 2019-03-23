@@ -1,4 +1,4 @@
-package com.vladt.kitesurfingapp;
+package com.vladt.kitesurfingapp.Activities;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -13,6 +13,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vladt.kitesurfingapp.Models.KitesurfingSpot;
+import com.vladt.kitesurfingapp.Network.APIEndpoints;
+import com.vladt.kitesurfingapp.Network.APIHeaders;
+import com.vladt.kitesurfingapp.Network.InternetConnection;
+import com.vladt.kitesurfingapp.Network.PostRequestJSON;
+import com.vladt.kitesurfingapp.R;
+import com.vladt.kitesurfingapp.Response.ResponseCodes;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,7 +32,7 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.details_activity);
+        setContentView(R.layout.activity_details);
 
         ks = (KitesurfingSpot) getIntent().getSerializableExtra("serializedSpot");
 
@@ -115,23 +123,25 @@ public class DetailsActivity extends AppCompatActivity {
 
         });
 
-        prj.execute(new String[]{APIEndpoints.getSpotDetails, urlBody.toString()},
-                APIHeaders.get());
-
+        if (InternetConnection.check()) {
+            prj.execute(new String[]{APIEndpoints.getSpotDetails, urlBody.toString()},
+                    APIHeaders.get());
+        } else {
+            Toast.makeText(DetailsActivity.this, "Can't get details while offline", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.details_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_details, menu);
         return true;
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu){
-        if(ks.getIsFavorite()) {
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (ks.getIsFavorite()) {
             menu.findItem(R.id.action_star).setIcon(R.drawable.white_star_on_button);
-        }
-        else{
+        } else {
             menu.findItem(R.id.action_star).setIcon(R.drawable.white_star_off_button);
         }
         return super.onPrepareOptionsMenu(menu);
@@ -151,14 +161,14 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         updatePreviousActivity();
     }
 
     private void setFavoriteSpot(final MenuItem item) {
         JSONObject spotID = new JSONObject();
         try {
-            spotID.put("spotId",ks.getID());
+            spotID.put("spotId", ks.getID());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -166,28 +176,30 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void processFinish(String output) {
                 ks.setIsFavorite(!ks.getIsFavorite());
-                if(ks.getIsFavorite()){
+                if (ks.getIsFavorite()) {
                     item.setIcon(R.drawable.white_star_on_button);
-                }
-                else{
+                } else {
                     item.setIcon(R.drawable.white_star_off_button);
                 }
             }
         });
-        if (!ks.getIsFavorite()) {
-            favoriteSpot.execute(new String[]{APIEndpoints.addFavoriteSpot, spotID.toString()},
-                    APIHeaders.get());
-        }
-        else{
-            favoriteSpot.execute(new String[]{APIEndpoints.removeFavoriteSpot, spotID.toString()},
-                    APIHeaders.get());
+        if (InternetConnection.check()) {
+            if (!ks.getIsFavorite()) {
+                favoriteSpot.execute(new String[]{APIEndpoints.addFavoriteSpot, spotID.toString()},
+                        APIHeaders.get());
+            } else {
+                favoriteSpot.execute(new String[]{APIEndpoints.removeFavoriteSpot, spotID.toString()},
+                        APIHeaders.get());
+            }
+        } else {
+            Toast.makeText(DetailsActivity.this, "Can't favorite while offline", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void updatePreviousActivity(){
+    private void updatePreviousActivity() {
         Intent intent = getIntent();
-        intent.putExtra("serializedSpot",ks);
-        setResult(ActivityCodes.Codes.RESULT_OK.ordinal(),intent);
+        intent.putExtra("serializedSpot", ks);
+        setResult(ResponseCodes.Codes.RESULT_OK.ordinal(), intent);
         finish();
     }
 }

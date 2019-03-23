@@ -1,4 +1,4 @@
-package com.vladt.kitesurfingapp;
+package com.vladt.kitesurfingapp.Network;
 
 import android.annotation.TargetApi;
 import android.os.Build;

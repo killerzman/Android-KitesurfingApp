@@ -1,4 +1,4 @@
-package com.vladt.kitesurfingapp;
+package com.vladt.kitesurfingapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,14 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.vladt.kitesurfingapp.Models.KitesurfingSpot;
+import com.vladt.kitesurfingapp.Network.APIEndpoints;
+import com.vladt.kitesurfingapp.Network.APIHeaders;
+import com.vladt.kitesurfingapp.Network.InternetConnection;
+import com.vladt.kitesurfingapp.Network.PostRequestJSON;
+import com.vladt.kitesurfingapp.R;
+import com.vladt.kitesurfingapp.Response.ResponseCodes;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +43,7 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_activity);
+        setContentView(R.layout.activity_list);
 
         Log.i("conn", InternetConnection.check().toString());
 
@@ -55,11 +63,9 @@ public class ListActivity extends AppCompatActivity {
                     }
                     urlBody.put("country", country);
 
-                    String windProbNumber = extras.getString("Wind Probability");
-                    if (windProbNumber == null || windProbNumber.equals("0")) {
-                        windProbNumber = "";
-                    }
+                    int windProbNumber = extras.getInt("Wind Probability");
                     urlBody.put("windProbability", windProbNumber);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -87,15 +93,22 @@ public class ListActivity extends AppCompatActivity {
                         jo = new JSONObject(res);
                         JSONArray ja = (JSONArray) jo.get("result");
                         spots = new ArrayList<>();
-                        for (int i = 0; i < ja.length(); i++) {
-                            JSONObject _jo = ja.getJSONObject(i);
-                            KitesurfingSpot ks = new KitesurfingSpot();
-                            ks.setID(_jo.get("id").toString());
-                            ks.setName(_jo.get("name").toString());
-                            ks.setCountry(_jo.get("country").toString());
-                            ks.setWhenToGo(_jo.get("whenToGo").toString());
-                            ks.setIsFavorite(_jo.get("isFavorite").toString().equals("true"));
-                            spots.add(ks);
+                        if (ja == null || ja.length() == 0) {
+                            Toast.makeText(ListActivity.this,
+                                    "No results found for filter",
+                                    Toast.LENGTH_LONG).show();
+                            finish();
+                        } else {
+                            for (int i = 0; i < ja.length(); i++) {
+                                JSONObject _jo = ja.getJSONObject(i);
+                                KitesurfingSpot ks = new KitesurfingSpot();
+                                ks.setID(_jo.get("id").toString());
+                                ks.setName(_jo.get("name").toString());
+                                ks.setCountry(_jo.get("country").toString());
+                                ks.setWhenToGo(_jo.get("whenToGo").toString());
+                                ks.setIsFavorite(_jo.get("isFavorite").toString().equals("true"));
+                                spots.add(ks);
+                            }
                         }
 
                     } catch (JSONException e) {
@@ -120,7 +133,7 @@ public class ListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.list_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_list, menu);
         return true;
     }
 
@@ -135,8 +148,8 @@ public class ListActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == ActivityCodes.Codes.REQUEST_CODE.ordinal() &&
-                resultCode == ActivityCodes.Codes.RESULT_OK.ordinal()) {
+        if (requestCode == ResponseCodes.Codes.REQUEST_CODE.ordinal() &&
+                resultCode == ResponseCodes.Codes.RESULT_OK.ordinal()) {
 
             KitesurfingSpot ks = (KitesurfingSpot) data.getSerializableExtra("serializedSpot");
             for (int i = 0; i < spots.size(); i++) {
@@ -169,7 +182,7 @@ public class ListActivity extends AppCompatActivity {
 
         @Override
         public View getView(final int i, View view, ViewGroup viewGroup) {
-            view = getLayoutInflater().inflate(R.layout.list_activity_view, null);
+            view = getLayoutInflater().inflate(R.layout.activity_list_view, null);
 
             final SwipeRefreshLayout srl = findViewById(R.id.pullToRefresh);
 
@@ -177,6 +190,16 @@ public class ListActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             if (!activityTitle.equals("")) {
                 getSupportActionBar().setTitle(activityTitle);
+                try {
+                    int windProb = urlBody.getInt("windProbability");
+                    String subtitle = "Wind Probability: " + String.valueOf(windProb) + "%";
+                    if (windProb != 100) {
+                        subtitle += " - 100%";
+                    }
+                    getSupportActionBar().setSubtitle(subtitle);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
             TextView spotName = view.findViewById(R.id.spotname);
             final ImageButton favButton = view.findViewById(R.id.favbutton);
@@ -209,15 +232,22 @@ public class ListActivity extends AppCompatActivity {
                                 jo = new JSONObject(res);
                                 JSONArray ja = (JSONArray) jo.get("result");
                                 spots = new ArrayList<>();
-                                for (int i = 0; i < ja.length(); i++) {
-                                    JSONObject _jo = ja.getJSONObject(i);
-                                    KitesurfingSpot ks = new KitesurfingSpot();
-                                    ks.setID(_jo.get("id").toString());
-                                    ks.setName(_jo.get("name").toString());
-                                    ks.setCountry(_jo.get("country").toString());
-                                    ks.setWhenToGo(_jo.get("whenToGo").toString());
-                                    ks.setIsFavorite(_jo.get("isFavorite").toString().equals("true"));
-                                    spots.add(ks);
+                                if (ja == null || ja.length() == 0) {
+                                    Toast.makeText(ListActivity.this,
+                                            "No results found for filter",
+                                            Toast.LENGTH_LONG).show();
+                                    finish();
+                                } else {
+                                    for (int i = 0; i < ja.length(); i++) {
+                                        JSONObject _jo = ja.getJSONObject(i);
+                                        KitesurfingSpot ks = new KitesurfingSpot();
+                                        ks.setID(_jo.get("id").toString());
+                                        ks.setName(_jo.get("name").toString());
+                                        ks.setCountry(_jo.get("country").toString());
+                                        ks.setWhenToGo(_jo.get("whenToGo").toString());
+                                        ks.setIsFavorite(_jo.get("isFavorite").toString().equals("true"));
+                                        spots.add(ks);
+                                    }
                                 }
 
                             } catch (JSONException e) {
@@ -244,7 +274,7 @@ public class ListActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int idx, long id) {
                     Intent intent = new Intent(ListActivity.this, DetailsActivity.class);
                     intent.putExtra("serializedSpot", spots.get(idx));
-                    startActivityForResult(intent, ActivityCodes.Codes.REQUEST_CODE.ordinal());
+                    startActivityForResult(intent, ResponseCodes.Codes.REQUEST_CODE.ordinal());
                 }
             });
 
@@ -268,12 +298,16 @@ public class ListActivity extends AppCompatActivity {
                             }
                         }
                     });
-                    if (!spots.get(i).getIsFavorite()) {
-                        favoriteSpot.execute(new String[]{APIEndpoints.addFavoriteSpot, spotID.toString()},
-                                APIHeaders.get());
+                    if (InternetConnection.check()) {
+                        if (!spots.get(i).getIsFavorite()) {
+                            favoriteSpot.execute(new String[]{APIEndpoints.addFavoriteSpot, spotID.toString()},
+                                    APIHeaders.get());
+                        } else {
+                            favoriteSpot.execute(new String[]{APIEndpoints.removeFavoriteSpot, spotID.toString()},
+                                    APIHeaders.get());
+                        }
                     } else {
-                        favoriteSpot.execute(new String[]{APIEndpoints.removeFavoriteSpot, spotID.toString()},
-                                APIHeaders.get());
+                        Toast.makeText(ListActivity.this, "Can't favorite while offline", Toast.LENGTH_LONG).show();
                     }
                     //Toast.makeText(ListActivity.this,"Pressed " + i, Toast.LENGTH_LONG).show();
                 }
