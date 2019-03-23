@@ -1,5 +1,6 @@
 package com.vladt.kitesurfingapp.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -77,7 +78,7 @@ public class FiltersActivity extends AppCompatActivity {
                 Button button = findViewById(R.id.applyFilter);
 
                 ArrayAdapter<String> countriesAdapter =
-                        new ArrayAdapter<String>(FiltersActivity.this, android.R.layout.simple_spinner_item, countries);
+                        new ArrayAdapter<>(FiltersActivity.this, android.R.layout.simple_spinner_item, countries);
 
                 countriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner.setAdapter(countriesAdapter);
@@ -96,6 +97,7 @@ public class FiltersActivity extends AppCompatActivity {
                 seekbar.setMax(100);
                 seekbar.setProgress(1);
                 seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         selectedWindProb[0] = progress;

@@ -1,5 +1,6 @@
 package com.vladt.kitesurfingapp.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -180,9 +181,10 @@ public class ListActivity extends AppCompatActivity {
             return 0;
         }
 
+        @SuppressLint("ViewHolder")
         @Override
         public View getView(final int i, View view, ViewGroup viewGroup) {
-            view = getLayoutInflater().inflate(R.layout.activity_list_view, null);
+            view = getLayoutInflater().inflate(R.layout.activity_list_view, viewGroup, false);
 
             final SwipeRefreshLayout srl = findViewById(R.id.pullToRefresh);
 

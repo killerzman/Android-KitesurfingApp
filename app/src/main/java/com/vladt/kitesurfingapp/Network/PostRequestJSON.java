@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 public class PostRequestJSON extends AsyncTask<String[], Integer, String> {
 
-    public AsyncResponse delegate = null;
+    private AsyncResponse delegate;
 
     public PostRequestJSON(AsyncResponse delegate) {
         this.delegate = delegate;

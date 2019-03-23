@@ -1,5 +1,6 @@
 package com.vladt.kitesurfingapp.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
@@ -64,6 +65,7 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             }
 
+            @SuppressLint("SetTextI18n")
             private void setCustomAdapter() {
                 //TextView countryDetails = findViewById(R.id.countryDetails);
                 TextView countryInfoDetails = findViewById(R.id.countryInfoDetails);
