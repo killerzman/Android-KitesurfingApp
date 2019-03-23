@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,6 +13,8 @@
 
     <include
         android:id="@+id/app_bar_details"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         layout="@layout/app_bar" />
 
     <TextView
@@ -17,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:text="Country"
+        android:text="@string/country"
         android:textColor="@android:color/black"
         app:layout_constraintTop_toBottomOf="@+id/app_bar_details" />
 
@@ -27,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:text="Country Info"
+        android:text="@string/country_info"
         android:textColor="#757575" />
 
     <TextView
@@ -37,7 +43,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
-        android:text="Latitude"
+        android:text="@string/latitude"
         android:textColor="@android:color/black" />
 
     <TextView
@@ -46,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:text="Latitude Info"
+        android:text="@string/latitude_info"
         android:textColor="#757575" />
 
     <TextView
@@ -56,7 +62,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
-        android:text="Longitude"
+        android:text="@string/longitude"
         android:textColor="@android:color/black" />
 
     <TextView
@@ -65,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:text="Longitude Info"
+        android:text="@string/longitude_info"
         android:textColor="#757575" />
 
     <TextView
@@ -75,7 +81,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
-        android:text="Wind Probability"
+        android:text="@string/wind_probability"
         android:textColor="@android:color/black" />
 
     <TextView
@@ -84,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:text="Wind Probability Info"
+        android:text="@string/wind_probability_info"
         android:textColor="#757575" />
 
     <TextView
@@ -94,7 +100,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
-        android:text="When to Go"
+        android:text="@string/when_to_go"
         android:textColor="@android:color/black" />
 
     <TextView
@@ -103,7 +109,18 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:text="When to Go Info"
+        android:text="@string/when_to_go_info"
         android:textColor="#757575" />
 
+    <Button
+        android:id="@+id/mapsLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/see_it_on_maps"
+        android:textColor="@android:color/black" />
+
 </LinearLayout>
+</ScrollView>

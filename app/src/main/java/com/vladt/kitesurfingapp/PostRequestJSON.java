@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PostRequestJSON extends AsyncTask<String, Integer, String> {
+public class PostRequestJSON extends AsyncTask<String[], Integer, String> {
 
     public AsyncResponse delegate = null;
 
@@ -22,19 +22,21 @@ public class PostRequestJSON extends AsyncTask<String, Integer, String> {
     }
 
     @Override
-    protected String doInBackground(String... params) {
+    protected String doInBackground(String[]... p) {
         try {
-            URL obj = new URL(params[0]);
+            String[] urlInfo = p[0];
+            String[] headersInfo = p[1];
+            URL obj = new URL(urlInfo[0]);
             HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
             postConnection.setRequestMethod("POST");
-            for (int i = 1; i < params.length - 1; i += 2) {
-                postConnection.setRequestProperty(params[i], params[i + 1]);
+            for (int i = 0; i < headersInfo.length; i += 2) {
+                postConnection.setRequestProperty(headersInfo[i], headersInfo[i + 1]);
             }
             postConnection.setDoInput(true);
             postConnection.setDoOutput(true);
             OutputStream os = postConnection.getOutputStream();
-            if (!params[params.length - 1].equals("")) {
-                os.write(params[params.length - 1].getBytes("UTF-8"));
+            if (!urlInfo[1].equals("")) {
+                os.write(urlInfo[1].getBytes("UTF-8"));
                 os.close();
             }
             postConnection.connect();
@@ -50,7 +52,7 @@ public class PostRequestJSON extends AsyncTask<String, Integer, String> {
                 }
                 return response.toString();
             } else {
-                return "POST NOT WORKED";
+                return "NO_POST";
             }
         } catch (MalformedURLException ex) {
             Logger.getLogger(PostRequestJSON.class.getName()).log(Level.SEVERE, null, ex);
@@ -59,9 +61,15 @@ public class PostRequestJSON extends AsyncTask<String, Integer, String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "INVALID URL";
+        return "INVALID_URL";
     }
 
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+
+    }
+
+    @Override
     protected void onPostExecute(String result) {
         delegate.processFinish(result);
     }

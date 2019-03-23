@@ -3,10 +3,20 @@
     <string name="spot_name">Spot name</string>
     <string name="fav_button">Favorite button</string>
     <string name="country_name">Country name</string>
-    <string name="country">Country</string>
-    <string name="wind_probability">Wind Probability</string>
     <string name="value_between_1_and_100">Value between 1 and 100</string>
     <string name="apply">Apply</string>
     <string name="filter">Filter</string>
     <string name="wind_probability_number">Wind probability number</string>
+    <string name="see_it_on_maps">See it on Maps</string>
+    <string name="when_to_go_info">When to Go Info</string>
+    <string name="when_to_go">When to Go</string>
+    <string name="wind_probability_info">Wind Probability Info</string>
+    <string name="wind_probability">Wind Probability</string>
+    <string name="longitude_info">Longitude Info</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude_info">Latitude Info</string>
+    <string name="latitude">Latitude</string>
+    <string name="country_info">Country Info</string>
+    <string name="country">Country</string>
+    <string name="menu_refresh">Menu Refresh</string>
 </resources>

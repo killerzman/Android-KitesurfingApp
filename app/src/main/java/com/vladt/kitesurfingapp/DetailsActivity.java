@@ -1,11 +1,17 @@
 package com.vladt.kitesurfingapp;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,40 +19,27 @@ import org.json.JSONObject;
 public class DetailsActivity extends AppCompatActivity {
 
     JSONObject urlBody;
-    String url;
-    String spotName;
-    String longitude;
-    String latitude;
-    String windProbability;
-    String country;
-    String whenToGo;
-    Boolean isFav = false;
+    KitesurfingSpot ks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_activity);
 
-        url = "https://internship-2019.herokuapp.com/api-spot-get-details";
+        ks = (KitesurfingSpot) getIntent().getSerializableExtra("serializedSpot");
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            urlBody = new JSONObject();
-            try {
-                urlBody.put("spotId", extras.getString("id"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        urlBody = new JSONObject();
+        try {
+            urlBody.put("spotId", ks.getID());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
         PostRequestJSON prj = new PostRequestJSON(new PostRequestJSON.AsyncResponse() {
 
-            final String[] result = new String[1];
-
             @Override
             public void processFinish(String output) {
-                result[0] = output;
-                parseJSONData(result[0]);
+                parseJSONData(output);
                 setCustomAdapter();
             }
 
@@ -55,14 +48,9 @@ public class DetailsActivity extends AppCompatActivity {
                 try {
                     jo = new JSONObject(res);
                     JSONObject _jo = (JSONObject) jo.get("result");
-                    country = _jo.getString("country");
-                    latitude = _jo.getString("latitude");
-                    longitude = _jo.getString("longitude");
-                    windProbability = _jo.getString("windProbability");
-                    whenToGo = _jo.getString("whenToGo");
-                    spotName = _jo.getString("name");
-
-
+                    ks.setLongitude(_jo.getString("longitude"));
+                    ks.setLatitude(_jo.getString("latitude"));
+                    ks.setWindProbability(_jo.getString("windProbability"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -71,32 +59,64 @@ public class DetailsActivity extends AppCompatActivity {
             private void setCustomAdapter() {
                 //TextView countryDetails = findViewById(R.id.countryDetails);
                 TextView countryInfoDetails = findViewById(R.id.countryInfoDetails);
+
                 //TextView latitudeDetails = findViewById(R.id.latitudeDetails);
                 TextView latitudeInfoDetails = findViewById(R.id.latitudeInfoDetails);
+
                 //TextView longitudeDetails = findViewById(R.id.longitudeDetails);
                 TextView longitudeInfoDetails = findViewById(R.id.longitudeInfoDetails);
+
                 //TextView windDetails = findViewById(R.id.windDetails);
                 TextView windInfoDetails = findViewById(R.id.windInfoDetails);
+
                 //TextView whenToGoDetails = findViewById(R.id.whenToGoDetails);
                 TextView whenToGoInfoDetails = findViewById(R.id.whenToGoInfoDetails);
-                countryInfoDetails.setText(country);
-                latitudeInfoDetails.setText(latitude);
-                longitudeInfoDetails.setText(longitude);
-                windInfoDetails.setText(windProbability);
-                whenToGo = whenToGo.substring(0,1).toUpperCase() + whenToGo.substring(1).toLowerCase();
-                whenToGoInfoDetails.setText(whenToGo);
+
+                Button mapsLink = findViewById(R.id.mapsLink);
+
+                countryInfoDetails.setText(ks.getCountry());
+
+                latitudeInfoDetails.setText(ks.getLatitude());
+
+                longitudeInfoDetails.setText(ks.getLongitude());
+
+                windInfoDetails.setText(ks.getWindProbability());
+
+                whenToGoInfoDetails.setText(ks.getWhenToGo().substring(0, 1).toUpperCase()
+                        + ks.getWhenToGo().substring(1).toLowerCase());
 
                 Toolbar toolbar = findViewById(R.id.app_bar_details);
                 setSupportActionBar(toolbar);
                 assert getSupportActionBar() != null;
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setHomeButtonEnabled(true);
-                getSupportActionBar().setTitle(spotName);
+                getSupportActionBar().setTitle(ks.getName());
+
+                mapsLink.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String uri = "https://www.google.com/maps/place/" + ks.getLatitude() +
+                                "," + ks.getLongitude();
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                        intent.setPackage("com.google.android.apps.maps");
+                        try {
+                            startActivity(intent);
+                        } catch (ActivityNotFoundException ex) {
+                            try {
+                                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                startActivity(unrestrictedIntent);
+                            } catch (ActivityNotFoundException innerEx) {
+                                Toast.makeText(DetailsActivity.this, "Please install a maps application", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
             }
 
         });
 
-        prj.execute(url, "Content-Type", "application/json", "token", "OxrBHp1ReG", urlBody.toString());
+        prj.execute(new String[]{APIEndpoints.getSpotDetails, urlBody.toString()},
+                APIHeaders.get());
 
     }
 
@@ -107,26 +127,67 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        if(ks.getIsFavorite()) {
+            menu.findItem(R.id.action_star).setIcon(R.drawable.white_star_on_button);
+        }
+        else{
+            menu.findItem(R.id.action_star).setIcon(R.drawable.white_star_off_button);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();
+                updatePreviousActivity();
                 return true;
             case R.id.action_star:
-                favSpot(item);
+                setFavoriteSpot(item);
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    void favSpot(MenuItem item){
-        if(!isFav){
-            item.setIcon(R.drawable.white_star_on_button);
-            isFav = true;
+    @Override
+    public void onBackPressed(){
+        updatePreviousActivity();
+    }
+
+    private void setFavoriteSpot(final MenuItem item) {
+        JSONObject spotID = new JSONObject();
+        try {
+            spotID.put("spotId",ks.getID());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        PostRequestJSON favoriteSpot = new PostRequestJSON(new PostRequestJSON.AsyncResponse() {
+            @Override
+            public void processFinish(String output) {
+                ks.setIsFavorite(!ks.getIsFavorite());
+                if(ks.getIsFavorite()){
+                    item.setIcon(R.drawable.white_star_on_button);
+                }
+                else{
+                    item.setIcon(R.drawable.white_star_off_button);
+                }
+            }
+        });
+        if (!ks.getIsFavorite()) {
+            favoriteSpot.execute(new String[]{APIEndpoints.addFavoriteSpot, spotID.toString()},
+                    APIHeaders.get());
         }
         else{
-            item.setIcon(R.drawable.white_star_off_button);
-            isFav = false;
+            favoriteSpot.execute(new String[]{APIEndpoints.removeFavoriteSpot, spotID.toString()},
+                    APIHeaders.get());
         }
+    }
+
+    private void updatePreviousActivity(){
+        Intent intent = getIntent();
+        intent.putExtra("serializedSpot",ks);
+        setResult(ActivityCodes.Codes.RESULT_OK.ordinal(),intent);
+        finish();
     }
 }

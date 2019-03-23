@@ -29,6 +29,7 @@ public class FiltersActivity extends AppCompatActivity {
         setContentView(R.layout.filters_activity);
 
         countries = new ArrayList<>();
+        countries.add("<All countries>");
 
         Toolbar toolbar = findViewById(R.id.app_bar_filters);
         setSupportActionBar(toolbar);
@@ -39,12 +40,10 @@ public class FiltersActivity extends AppCompatActivity {
 
 
         PostRequestJSON prj = new PostRequestJSON(new PostRequestJSON.AsyncResponse() {
-            final String[] result = new String[1];
 
             @Override
             public void processFinish(String output) {
-                result[0] = output;
-                parseJSONData(result[0]);
+                parseJSONData(output);
                 setCustomAdapter();
             }
 
@@ -92,7 +91,7 @@ public class FiltersActivity extends AppCompatActivity {
                 seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        selectedWindProb[0] = Integer.valueOf(progress);
+                        selectedWindProb[0] = progress;
                         windProbText.setText("Wind Probability : " + String.valueOf(progress));
                     }
 
@@ -120,9 +119,8 @@ public class FiltersActivity extends AppCompatActivity {
             }
         });
 
-        prj.execute("https://internship-2019.herokuapp.com/api-spot-get-countries",
-                "Content-Type", "application/json",
-                "token", "OxrBHp1ReG", "");
+        prj.execute(new String[]{APIEndpoints.getSpotCountries, ""},
+                APIHeaders.get());
     }
 
     @Override
