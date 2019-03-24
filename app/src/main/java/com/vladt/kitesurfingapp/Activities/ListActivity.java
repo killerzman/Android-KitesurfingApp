@@ -26,6 +26,7 @@ import com.vladt.kitesurfingapp.Network.InternetConnection;
 import com.vladt.kitesurfingapp.Network.PostRequestJSON;
 import com.vladt.kitesurfingapp.R;
 import com.vladt.kitesurfingapp.Response.ResponseCodes;
+import com.vladt.kitesurfingapp.Utils.TintedDrawable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -149,6 +150,7 @@ public class ListActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (activityTitle.equals("")) {
+            menu.findItem(R.id.action_filter).setIcon(TintedDrawable.get(getApplicationContext(),R.drawable.white_filter_button,R.color.colorWhite));
             if (AppCompatDelegate.getDefaultNightMode()
                     == AppCompatDelegate.MODE_NIGHT_YES) {
                 menu.findItem(R.id.action_darkmode).setIcon(R.drawable.darkmode_on);

@@ -22,6 +22,7 @@ import com.vladt.kitesurfingapp.Network.InternetConnection;
 import com.vladt.kitesurfingapp.Network.PostRequestJSON;
 import com.vladt.kitesurfingapp.R;
 import com.vladt.kitesurfingapp.Response.ResponseCodes;
+import com.vladt.kitesurfingapp.Utils.TintedDrawable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -148,9 +149,11 @@ public class DetailsActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (ks.getIsFavorite()) {
-            menu.findItem(R.id.action_star).setIcon(R.drawable.white_star_on_button);
+            //menu.findItem(R.id.action_star).setIcon(R.drawable.white_star_on_button);
+            menu.findItem(R.id.action_star).setIcon(TintedDrawable.get(getApplicationContext(),R.drawable.white_star_on_button,R.color.colorWhite));
         } else {
-            menu.findItem(R.id.action_star).setIcon(R.drawable.white_star_off_button);
+            //menu.findItem(R.id.action_star).setIcon(R.drawable.white_star_off_button);
+            menu.findItem(R.id.action_star).setIcon(TintedDrawable.get(getApplicationContext(),R.drawable.white_star_off_button,R.color.colorWhite));
         }
         return super.onPrepareOptionsMenu(menu);
     }

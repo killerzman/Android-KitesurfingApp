@@ -5,5 +5,5 @@
         android:id="@+id/action_star"
         android:icon="@drawable/white_star_button"
         android:title="Fav Spot"
-        app:showAsAction="always"></item>
+        app:showAsAction="always" />
 </menu>
