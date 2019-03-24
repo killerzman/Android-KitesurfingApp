@@ -21,117 +21,117 @@
         android:id="@+id/countryDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:text="@string/country"
         android:textSize="18sp"
-        android:textColor="@android:color/black"
+        android:layout_marginLeft="8sp"
+        android:layout_marginRight="8sp"
+        android:text="@string/country"
+        android:textColor="?attr/primaryTextColor"
         app:layout_constraintTop_toBottomOf="@+id/app_bar_details" />
 
     <TextView
         android:id="@+id/countryInfoDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:textSize="18sp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginRight="8sp"
         android:text="@string/country_info"
-        android:textColor="#757575" />
+        android:textColor="?attr/secondaryTextColor" />
 
     <TextView
         android:id="@+id/latitudeDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:textSize="18sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginTop="10sp"
+        android:layout_marginRight="8sp"
         android:text="@string/latitude"
-        android:textColor="@android:color/black" />
+        android:textColor="?attr/primaryTextColor" />
 
     <TextView
         android:id="@+id/latitudeInfoDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:textSize="18sp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginRight="8sp"
         android:text="@string/latitude_info"
-        android:textColor="#757575" />
+        android:textColor="?attr/secondaryTextColor" />
 
     <TextView
         android:id="@+id/longitudeDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:textSize="18sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginTop="10sp"
+        android:layout_marginRight="8sp"
         android:text="@string/longitude"
-        android:textColor="@android:color/black" />
+        android:textColor="?attr/primaryTextColor" />
 
     <TextView
         android:id="@+id/longitudeInfoDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:textSize="18sp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginRight="8sp"
         android:text="@string/longitude_info"
-        android:textColor="#757575" />
+        android:textColor="?attr/secondaryTextColor" />
 
     <TextView
         android:id="@+id/windDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginTop="10sp"
+        android:layout_marginRight="8sp"
         android:text="@string/wind_probability"
-        android:textColor="@android:color/black" />
+        android:textColor="?attr/primaryTextColor" />
 
     <TextView
         android:id="@+id/windInfoDetails"
         android:layout_width="match_parent"
-        android:textSize="18sp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginRight="8sp"
+        android:textSize="18sp"
         android:text="@string/wind_probability_info"
-        android:textColor="#757575" />
+        android:textColor="?attr/secondaryTextColor" />
 
     <TextView
         android:id="@+id/whenToGoDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:textSize="18sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginTop="10sp"
+        android:layout_marginRight="8sp"
         android:text="@string/when_to_go"
-        android:textColor="@android:color/black" />
+        android:textColor="?attr/primaryTextColor" />
 
     <TextView
         android:id="@+id/whenToGoInfoDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:textSize="18sp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginRight="8sp"
         android:text="@string/when_to_go_info"
-        android:textColor="#757575" />
+        android:textColor="?attr/secondaryTextColor" />
 
     <Button
         android:id="@+id/mapsLink"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="8dp"
         android:textSize="15sp"
+        android:layout_marginLeft="8sp"
+        android:layout_marginTop="10sp"
+        android:layout_marginRight="8sp"
         android:text="@string/see_it_on_maps"
-        android:textColor="@android:color/black" />
+        android:textColor="?attr/primaryTextColor" />
 
 </LinearLayout>
 </ScrollView>

@@ -19,4 +19,5 @@
     <string name="country_info">Country Info</string>
     <string name="country">Country</string>
     <string name="menu_refresh">Menu Refresh</string>
+    <string name="dark_mode">Dark Mode</string>
 </resources>

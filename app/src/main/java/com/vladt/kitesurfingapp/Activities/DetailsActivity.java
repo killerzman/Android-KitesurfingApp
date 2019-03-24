@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +33,11 @@ public class DetailsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (AppCompatDelegate.getDefaultNightMode()
+                == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.AppTheme_Dark);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 

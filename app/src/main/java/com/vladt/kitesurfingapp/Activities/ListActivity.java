@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -43,10 +44,15 @@ public class ListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.AppTheme_Dark);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        Log.i("conn", InternetConnection.check().toString());
+        //Log.i("conn", InternetConnection.check().toString());
 
         if (InternetConnection.check()) {
             Bundle extras = getIntent().getExtras();
@@ -134,8 +140,23 @@ public class ListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_list, menu);
+        if (activityTitle.equals("")) {
+            getMenuInflater().inflate(R.menu.menu_list, menu);
+        }
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (activityTitle.equals("")) {
+            if (AppCompatDelegate.getDefaultNightMode()
+                    == AppCompatDelegate.MODE_NIGHT_YES) {
+                menu.findItem(R.id.action_darkmode).setIcon(R.drawable.darkmode_on);
+            } else if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
+                menu.findItem(R.id.action_darkmode).setIcon(R.drawable.darkmode_off);
+            }
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -143,6 +164,12 @@ public class ListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_filter:
                 startActivity(new Intent(ListActivity.this, FiltersActivity.class));
+                break;
+            case R.id.action_darkmode:
+                if (activityTitle.equals("")) {
+                    updateDarkMode();
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -162,6 +189,15 @@ public class ListActivity extends AppCompatActivity {
             listView.setAdapter(new CustomAdapter());
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    void updateDarkMode() {
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+        Toast.makeText(ListActivity.this, "Restart to fully refresh theme", Toast.LENGTH_LONG).show();
     }
 
     class CustomAdapter extends BaseAdapter {

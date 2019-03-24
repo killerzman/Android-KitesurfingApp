@@ -3,7 +3,7 @@
     android:id="@+id/relLayout"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="10sp"
     android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal"
     tools:ignore="ExtraText">
@@ -12,14 +12,14 @@
         android:id="@+id/spotname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10sp"
+        android:layout_marginLeft="10sp"
+        android:textColor="?attr/primaryTextColor"
         android:layout_toStartOf="@id/favbutton"
         android:layout_toLeftOf="@id/favbutton"
         android:clickable="false"
         android:focusable="false"
         android:text="@string/spot_name"
-        android:textColor="#000000"
         android:textSize="20sp" />
 
     <ImageButton
@@ -28,11 +28,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginStart="10sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginTop="15sp"
+        android:layout_marginEnd="15sp"
+        android:layout_marginRight="15sp"
         android:background="@android:color/transparent"
         android:src="@drawable/normal_star_button"
         android:text="@string/fav_button" />
@@ -41,14 +41,15 @@
         android:id="@+id/countryname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10sp"
         android:layout_below="@id/spotname"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="10sp"
+        android:text="@string/country_name"
+        android:textColor="?attr/secondaryTextColor"
         android:layout_toStartOf="@id/favbutton"
         android:layout_toLeftOf="@id/favbutton"
         android:clickable="false"
         android:focusable="false"
-        android:text="@string/country_name"
         android:textSize="16sp" />
 
 </RelativeLayout>

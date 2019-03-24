@@ -24,7 +24,7 @@
         android:layout_marginEnd="20sp"
         android:layout_marginRight="20sp"
         android:text="@string/country"
-        android:textColor="@android:color/black" />
+        android:textColor="?attr/primaryTextColor" />
 
     <Spinner
         android:id="@+id/countrySpinner"
@@ -46,7 +46,7 @@
         android:layout_marginEnd="20sp"
         android:layout_marginRight="20sp"
         android:text="@string/wind_probability"
-        android:textColor="@android:color/black" />
+        android:textColor="?attr/primaryTextColor" />
 
     <SeekBar
         android:id="@+id/seekbarWind"

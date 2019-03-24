@@ -3,6 +3,14 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:statusBarColor" tools:targetApi="lollipop">@color/colorPrimaryDark</item>
+        <item name="primaryTextColor">#33343B</item>
+        <item name="secondaryTextColor">#757575</item>
+        <item name="backgroundColor">#F4F4F6</item>
+    </style>
+    <style name="AppTheme.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="primaryTextColor">#F4F4F6</item>
+        <item name="secondaryTextColor">#999999</item>
+        <item name="backgroundColor">#33343B</item>
     </style>
 
 </resources>
