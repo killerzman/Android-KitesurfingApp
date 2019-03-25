@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 
+//supports tinting drawables for API 15-25
 public class TintedDrawable {
 
     public static Drawable get(@NonNull final Context context,

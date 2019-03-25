@@ -24,24 +24,38 @@ public class PostRequestJSON extends AsyncTask<String[], Integer, String> {
     @Override
     protected String doInBackground(String[]... p) {
         try {
+            //urlInfo contains the url and url body for the request
             String[] urlInfo = p[0];
+
+            //headersInfo contains the key and value items for headers
             String[] headersInfo = p[1];
+
+            //urlInfo[0] is the url
             URL obj = new URL(urlInfo[0]);
             HttpURLConnection postConnection = (HttpURLConnection) obj.openConnection();
             postConnection.setRequestMethod("POST");
             for (int i = 0; i < headersInfo.length; i += 2) {
+
+                //headersInfo of even value is key
+                //headersInfo of odd value is value of previous key
                 postConnection.setRequestProperty(headersInfo[i], headersInfo[i + 1]);
             }
             postConnection.setDoInput(true);
             postConnection.setDoOutput(true);
             OutputStream os = postConnection.getOutputStream();
+
+            //if necessary add in url body request
             if (!urlInfo[1].equals("")) {
                 os.write(urlInfo[1].getBytes("UTF-8"));
                 os.close();
             }
             postConnection.connect();
             int responseCode = postConnection.getResponseCode();
+
+            //if the connection is ok
             if (responseCode == HttpURLConnection.HTTP_OK) {
+
+                //get server response as string
                 StringBuffer response;
                 BufferedReader in = new BufferedReader(new InputStreamReader(
                         postConnection.getInputStream()));

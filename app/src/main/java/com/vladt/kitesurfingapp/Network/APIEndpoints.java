@@ -1,5 +1,6 @@
 package com.vladt.kitesurfingapp.Network;
 
+//server endpoints
 public class APIEndpoints {
     final static String host = "internship-2019.herokuapp.com";
     final public static String getAllSpots = "https://internship-2019.herokuapp.com/api-spot-get-all";

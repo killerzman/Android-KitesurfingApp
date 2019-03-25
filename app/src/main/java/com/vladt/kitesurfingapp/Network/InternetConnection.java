@@ -9,6 +9,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+//for checking if there is an active internet connection
 public class InternetConnection {
 
     public static Boolean check() {
@@ -18,18 +19,24 @@ public class InternetConnection {
                 @Override
                 public InetAddress call() {
                     try {
+                        //get host address name
                         return InetAddress.getByName(APIEndpoints.host);
                     } catch (UnknownHostException e) {
                         return null;
                     }
                 }
             });
+
+            //set a timeout
             inetAddress = future.get(10000, TimeUnit.MILLISECONDS);
             future.cancel(true);
-        } catch (InterruptedException e) {
-        } catch (ExecutionException e) {
-        } catch (TimeoutException e) {
+        } catch (InterruptedException ignored) {
+        } catch (ExecutionException ignored) {
+        } catch (TimeoutException ignored) {
         }
+
+        //if the address isn't empty and isn't unreachable
+        //return valid connection
         return inetAddress != null && !inetAddress.equals("");
     }
 }

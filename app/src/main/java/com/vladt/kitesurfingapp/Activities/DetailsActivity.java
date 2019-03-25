@@ -2,11 +2,12 @@ package com.vladt.kitesurfingapp.Activities;
 
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,28 +30,54 @@ import org.json.JSONObject;
 
 public class DetailsActivity extends AppCompatActivity {
 
-    JSONObject urlBody;
-    KitesurfingSpot ks;
+    //spot object for details
+    private KitesurfingSpot ks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (AppCompatDelegate.getDefaultNightMode()
-                == AppCompatDelegate.MODE_NIGHT_YES) {
+
+        //get SharedPreferences for dark mode
+        SharedPreferences prefs = getSharedPreferences("MyPref", Context.MODE_PRIVATE);
+
+        //get value for dark mode
+        //if there is no value, set it as -1
+        //-1 means uninitialised
+        int isDarkMode = prefs.getInt("darkMode", -1);
+
+        //if dark mode is uninitialised
+        if (isDarkMode == -1) {
+            //set dark mode off
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("darkMode", 0);
+            editor.apply();
+            setTheme(R.style.AppTheme);
+        }
+
+        //if dark mode is disabled
+        else if (isDarkMode == 0) {
+            setTheme(R.style.AppTheme);
+        }
+
+        //if dark mode is enabled
+        else if (isDarkMode == 1) {
             setTheme(R.style.AppTheme_Dark);
         }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+        //get some spot details from list activity
         ks = (KitesurfingSpot) getIntent().getSerializableExtra("serializedSpot");
 
-        urlBody = new JSONObject();
+        //set body request
+        JSONObject urlBody = new JSONObject();
         try {
             urlBody.put("spotId", ks.getID());
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        //request for updating spot details
         PostRequestJSON prj = new PostRequestJSON(new PostRequestJSON.AsyncResponse() {
 
             @Override
@@ -63,6 +90,8 @@ public class DetailsActivity extends AppCompatActivity {
                 JSONObject jo;
                 try {
                     jo = new JSONObject(res);
+
+                    //get more spot details
                     JSONObject _jo = (JSONObject) jo.get("result");
                     ks.setLongitude(_jo.getString("longitude"));
                     ks.setLatitude(_jo.getString("latitude"));
@@ -102,6 +131,7 @@ public class DetailsActivity extends AppCompatActivity {
                 whenToGoInfoDetails.setText(ks.getWhenToGo().substring(0, 1).toUpperCase()
                         + ks.getWhenToGo().substring(1).toLowerCase());
 
+                //set appbar
                 Toolbar toolbar = findViewById(R.id.app_bar_details);
                 setSupportActionBar(toolbar);
                 assert getSupportActionBar() != null;
@@ -109,6 +139,8 @@ public class DetailsActivity extends AppCompatActivity {
                 getSupportActionBar().setHomeButtonEnabled(true);
                 getSupportActionBar().setTitle(ks.getName());
 
+                //button for seeing spot on Google Maps
+                //or another application if GMaps isn't available
                 mapsLink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -132,10 +164,14 @@ public class DetailsActivity extends AppCompatActivity {
 
         });
 
+        //execute request for getting spot details
+        //if there is internet connection
         if (InternetConnection.check()) {
             prj.execute(new String[]{APIEndpoints.getSpotDetails, urlBody.toString()},
                     APIHeaders.get());
-        } else {
+        }
+        //else notify user through toast
+        else {
             Toast.makeText(DetailsActivity.this, "Can't get details while offline", Toast.LENGTH_LONG).show();
         }
     }
@@ -148,11 +184,12 @@ public class DetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+
+        //set favorite button for spot accordingly
+        //and tint it
         if (ks.getIsFavorite()) {
-            //menu.findItem(R.id.action_star).setIcon(R.drawable.white_star_on_button);
             menu.findItem(R.id.action_star).setIcon(TintedDrawable.get(getApplicationContext(),R.drawable.white_star_on_button,R.color.colorWhite));
         } else {
-            //menu.findItem(R.id.action_star).setIcon(R.drawable.white_star_off_button);
             menu.findItem(R.id.action_star).setIcon(TintedDrawable.get(getApplicationContext(),R.drawable.white_star_off_button,R.color.colorWhite));
         }
         return super.onPrepareOptionsMenu(menu);
@@ -162,7 +199,7 @@ public class DetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                updatePreviousActivity();
+                updatePreviousList();
                 return true;
             case R.id.action_star:
                 setFavoriteSpot(item);
@@ -173,7 +210,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        updatePreviousActivity();
+        updatePreviousList();
     }
 
     private void setFavoriteSpot(final MenuItem item) {
@@ -183,6 +220,8 @@ public class DetailsActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        //request for favorite spot inside details
         PostRequestJSON favoriteSpot = new PostRequestJSON(new PostRequestJSON.AsyncResponse() {
             @Override
             public void processFinish(String output) {
@@ -194,6 +233,8 @@ public class DetailsActivity extends AppCompatActivity {
                 }
             }
         });
+        //if there is an internet connection
+        //update favorite state for spot accordingly
         if (InternetConnection.check()) {
             if (!ks.getIsFavorite()) {
                 favoriteSpot.execute(new String[]{APIEndpoints.addFavoriteSpot, spotID.toString()},
@@ -202,15 +243,19 @@ public class DetailsActivity extends AppCompatActivity {
                 favoriteSpot.execute(new String[]{APIEndpoints.removeFavoriteSpot, spotID.toString()},
                         APIHeaders.get());
             }
-        } else {
+        }
+        //else notify user through toast
+        else {
             Toast.makeText(DetailsActivity.this, "Can't favorite while offline", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void updatePreviousActivity() {
+    private void updatePreviousList() {
+        //get back updated details about spot
+        //into the list activity
         Intent intent = getIntent();
         intent.putExtra("serializedSpot", ks);
-        setResult(ResponseCodes.Codes.RESULT_OK.ordinal(), intent);
+        setResult(ResponseCodes.Codes.LIST_TO_DETAILS_OK.ordinal(), intent);
         finish();
     }
 }
