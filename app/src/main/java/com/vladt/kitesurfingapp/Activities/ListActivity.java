@@ -37,6 +37,7 @@ import java.util.ArrayList;
 public class ListActivity extends AppCompatActivity {
 
     ArrayList<KitesurfingSpot> spots;
+    CustomAdapter ca;
     ListView listView;
     JSONObject urlBody;
     String urlBodyString;
@@ -52,6 +53,7 @@ public class ListActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        ca = new CustomAdapter();
 
         //Log.i("conn", InternetConnection.check().toString());
 
@@ -126,8 +128,7 @@ public class ListActivity extends AppCompatActivity {
 
                 private void setCustomAdapter() {
                     listView = findViewById(R.id.list);
-
-                    listView.setAdapter(new CustomAdapter());
+                    listView.setAdapter(ca);
                 }
 
             });
@@ -188,7 +189,7 @@ public class ListActivity extends AppCompatActivity {
                     break;
                 }
             }
-            listView.setAdapter(new CustomAdapter());
+            ca.notifyDataSetChanged();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -196,10 +197,15 @@ public class ListActivity extends AppCompatActivity {
     void updateDarkMode() {
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            setTheme(R.style.AppTheme);
+            recreate();
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            setTheme(R.style.AppTheme_Dark);
+            recreate();
         }
-        Toast.makeText(ListActivity.this, "Restart to fully refresh theme", Toast.LENGTH_LONG).show();
+        //ca.notifyDataSetChanged();
+        //Toast.makeText(ListActivity.this, "Restart to fully refresh theme", Toast.LENGTH_LONG).show();
     }
 
     class CustomAdapter extends BaseAdapter {
@@ -223,7 +229,6 @@ public class ListActivity extends AppCompatActivity {
         @Override
         public View getView(final int i, View view, ViewGroup viewGroup) {
             view = getLayoutInflater().inflate(R.layout.activity_list_view, viewGroup, false);
-
             final SwipeRefreshLayout srl = findViewById(R.id.pullToRefresh);
 
             Toolbar toolbar = findViewById(R.id.app_bar_list);
