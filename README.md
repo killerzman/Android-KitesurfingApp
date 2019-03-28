@@ -1,5 +1,8 @@
 # Kitesurfing App
 
+<b>IF SERVER API IS DOWN, JUST LOOK AT THE SCREENSHOTS<b>
+<b>I SWEAR IT'S FUNCTIONAL<b>
+
 - See all the kitesurfing spots around the world
 - See more details about any spot
 - Filter spots after country and wind probability
