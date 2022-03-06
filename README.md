@@ -1,4 +1,4 @@
-# Kitesurfing App Concept
+# Android Kitesurfing App Concept
 
 <b>This app was made for an internship interview and required using an API that is now down.<b>
   
