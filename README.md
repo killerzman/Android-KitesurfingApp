@@ -1,8 +1,8 @@
-# Kitesurfing App
+# Kitesurfing App Concept
 
-<b>IF SERVER API IS DOWN, JUST LOOK AT THE SCREENSHOTS.<b>
+<b>This app was made for an internship interview and required using an API that is now down.<b>
   
-<b>I SWEAR IT'S FUNCTIONAL!<b>
+<b>I am leaving this here for archival purposes.<b>
 
 - See all the kitesurfing spots around the world
 - See more details about any spot
